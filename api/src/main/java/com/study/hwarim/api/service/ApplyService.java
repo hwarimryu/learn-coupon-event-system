@@ -1,7 +1,7 @@
 package com.study.hwarim.api.service;
 
-import com.study.hwarim.api.domain.Coupon;
 import com.study.hwarim.api.repository.CouponCountRepository;
+import com.study.hwarim.api.producer.CouponCreateProducer;
 import com.study.hwarim.api.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class ApplyService {
     private final CouponRepository couponRepository;
     private final CouponCountRepository couponCountRepository;
+    private final CouponCreateProducer couponCreateProducer;
 
     public void apply(Long userId) {
         long count = couponCountRepository.increment();
@@ -19,7 +20,7 @@ public class ApplyService {
             return;
         }
 
-        couponRepository.save(new Coupon(userId));
+        couponCreateProducer.create(userId);
     }
 
 }
